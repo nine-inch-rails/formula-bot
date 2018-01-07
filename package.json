@@ -1,7 +1,7 @@
 {
-  "name": "messenger-get-started",
+  "name": "formula-bot",
   "version": "1.0.0",
-  "description": "Get started example for Messenger Platform",
+  "description": "Receive images of formulas",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fbsamples/messenger-platform-samples.git"
+    "url": "https://github.com/nine-inch-rails/formula-bot.git"
   },
   "author": "Facebook",
   "license": "ISC",
@@ -19,9 +19,10 @@
     "config": "^1.20.4",
     "ejs": "^2.4.2",
     "express": "^4.13.4",
+    "fourier": "^0.2.1",
     "request": "^2.72.0"
   },
   "engines": {
-    "node": "~4.1.2"
+    "node": "8.0.0"
   }
 }

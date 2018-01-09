@@ -17,7 +17,10 @@ const
   express = require('express'),
   https = require('https'),
   request = require('request');
-
+  xml2js = require('xml2js');
+  parser = new xml2js.Parser();
+  wolfclient = require('node-wolfram');
+  wolfram = new wolfclient(process.env.WOLFRAM_API_KEY);
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
@@ -254,30 +257,49 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
+    var qin = messageText.match(/wolfram (.+)/);
+    if(qin != null) {//wolfram alpha query
+      var queryimagelink
+      var qresult = wolfram.query(qin[1], function(err, results)
+          {
+            if(err)
+            {
+              sendTextMessage(senderID, err);
+            }
+            else
+            {//get image url from result
+              queryimagelink = results.queryresult.pod[0].subpod[0].img
+              sendQueryResult(senderID, queryimagelink);
+            }
+          }
+        )
+    }
+    else {
+      switch (messageText) {
+        case 'image':
+          sendImageMessage(senderID);
+          break;
 
-      case 'gif':
-        sendGifMessage(senderID);
-        break;
+        case 'gif':
+          sendGifMessage(senderID);
+          break;
       
-      case 'laplace transform':
-        sendTextMessage(senderID, "$$ \\mathcal{L}\\{f(t)\\} = e^{-st}f(t)dt $$");
-        break;
-      case 'fourier transform':
-        sendTextMessage(senderID, "$$ \\mathcal{F}\\{f(t)\\} = \\int_{-\\infty}^{\\infty} x(t)e^{-jwt} dt$$");
-        break;
-      case 'z transform':
-        sendTextMessage(senderID, "$$\\mathcal{Z}\\{x[k]\\}=\\sum_{k=0}^{\\infty}x[k]z^{-k}$$");
-        break;
+        case 'laplace transform':
+          sendTextMessage(senderID, "$$ \\mathcal{L}\\{f(t)\\} = e^{-st}f(t)dt $$");
+          break;
+        case 'fourier transform':
+          sendTextMessage(senderID, "$$ \\mathcal{F}\\{f(t)\\} = \\int_{-\\infty}^{\\infty} x(t)e^{-jwt} dt$$");
+          break;
+        case 'z transform':
+          sendTextMessage(senderID, "$$\\mathcal{Z}\\{x[k]\\}=\\sum_{k=0}^{\\infty}x[k]z^{-k}$$");
+          break;
 
-      case 'help':
-        sendTextmessage(senderID, "todo");
-        break;
-      default:
-        sendTextMessage(senderID, messageText);
+        case 'help':
+          sendTextmessage(senderID, "todo");
+          break;
+        default:
+          sendTextMessage(senderID, messageText);
+      }
     }
   } else if (messageAttachments) {
     sendTextMessage(senderID, "Message with attachment received");
@@ -392,6 +414,27 @@ function sendImageMessage(recipientId) {
     }
   };
 
+  callSendAPI(messageData);
+}
+
+/*
+ * Send an image message with the url from wolfram api
+ *
+ */
+function sendQueryResult(recipientId, imageUrl) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          url: imageUrl
+        }
+      }
+    }
+  };
   callSendAPI(messageData);
 }
 

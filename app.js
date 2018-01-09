@@ -268,7 +268,7 @@ function receivedMessage(event) {
             }
             else
             {//get image url from result
-              var queryimagelink = results.queryresult.pod[0].subpod[0].img;
+              var queryimagelink = results.queryresult.pod[0].subpod[0].img[0].$.src;
               console.log("wolfram image link: " + queryimagelink);
               sendQueryResult(senderID, queryimagelink);
             }

@@ -269,7 +269,7 @@ function receivedMessage(event) {
             else
             {//get image url from result
               var queryimagelink = results.queryresult.pod[0].subpod[0].img;
-              console.log("wolfram image link: #{queryimagelink}");
+              console.log("wolfram image link: " + queryimagelink);
               sendQueryResult(senderID, queryimagelink);
             }
           }

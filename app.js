@@ -260,7 +260,6 @@ function receivedMessage(event) {
     // the text we received.
     var qin = messageText.match(/wolfram (.+)/);
     if(qin != null) {//wolfram alpha query
-      var queryimagelink
       var qresult = wolfram.query(qin[1], function(err, results)
           {
             if(err)
@@ -269,7 +268,8 @@ function receivedMessage(event) {
             }
             else
             {//get image url from result
-              queryimagelink = results.queryresult.pod[0].subpod[0].img
+              var queryimagelink = results.queryresult.pod[0].subpod[0].img;
+              console.log("wolfram image link: #{queryimagelink}");
               sendQueryResult(senderID, queryimagelink);
             }
           }

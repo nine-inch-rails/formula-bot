@@ -16,11 +16,12 @@ const
   crypto = require('crypto'),
   express = require('express'),
   https = require('https'),
-  request = require('request');
-  xml2js = require('xml2js');
-  parser = new xml2js.Parser();
-  wolfclient = require('node-wolfram');
+  request = require('request'),
+  xml2js = require('xml2js'),
+  parser = new xml2js.Parser(),
+  wolfclient = require('node-wolfram'),
   wolfram = new wolfclient(process.env.WOLFRAM_API_KEY);
+
 var app = express();
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');

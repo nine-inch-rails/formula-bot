@@ -269,17 +269,33 @@ function receivedMessage(event) {
             else
             {//get image url from result
 
-              if(results.queryresult.pod[1].$.title.toUpperCase() === "Result".toUpperCase())//if 2nd pod is result, use that, else, use first pod
+              if(qin.includes("bode plot"))
               {
-                var p = results.queryresult.pod[1].subpod[0].img[0].$.src;
-                console.log("wolfram image link: " + p);
-                sendQueryResult(senderID, p);
+                var i;
+                for(i = 0; i < results.queryresult.pod.length; i++)
+                {
+                  if(results.queryresult.pod[i].$.title.toUpperCase() === "BODE PLOT")
+                  {
+                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
+                    console.log("wolfram image link: " + p);
+                    sendQueryResult(senderID, p);
+                  }
+                }
               }
               else
               {
-                var queryimagelink = results.queryresult.pod[0].subpod[0].img[0].$.src;
-                console.log("wolfram image link: " + queryimagelink);
-                sendQueryResult(senderID, queryimagelink);
+                if(results.queryresult.pod[1].$.title.toUpperCase() === "Result".toUpperCase())//if 2nd pod is result, use that, else, use first pod
+                {
+                  var p = results.queryresult.pod[1].subpod[0].img[0].$.src;
+                  console.log("wolfram image link: " + p);
+                  sendQueryResult(senderID, p);
+                }
+                else
+                {
+                  var queryimagelink = results.queryresult.pod[0].subpod[0].img[0].$.src;
+                  console.log("wolfram image link: " + queryimagelink);
+                  sendQueryResult(senderID, queryimagelink);
+                }
               }
             }
           }

@@ -260,6 +260,7 @@ function receivedMessage(event) {
     // the text we received.
     var qin = messageText.match(/wolfram (.+)/i);
     if(qin != null) {//wolfram alpha query
+      console.log("qin value: " + qin);
       var qresult = wolfram.query(qin[1], function(err, results)
           {
             if(err)
@@ -279,7 +280,7 @@ function receivedMessage(event) {
                     var p = results.queryresult.pod[i].subpod[i].img[0].$.src;
                     console.log("wolfram image link: " + p);
                     console.log("bode plot number wtf: " + i);
-                    console.log("link: " +p)
+                    console.log("link: " +p);
                     sendQueryResult(senderID, p);
                   }
                 }

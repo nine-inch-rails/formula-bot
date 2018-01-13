@@ -276,8 +276,10 @@ function receivedMessage(event) {
                 {
                   if(results.queryresult.pod[i].$.title.toUpperCase() === "BODE PLOT")
                   {
-                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
+                    var p = results.queryresult.pod[i].subpod[i].img[0].$.src;
                     console.log("wolfram image link: " + p);
+                    console.log("bode plot number wtf: " + i);
+                    console.log("link: " +p)
                     sendQueryResult(senderID, p);
                   }
                 }

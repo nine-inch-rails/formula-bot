@@ -270,14 +270,14 @@ function receivedMessage(event) {
             else
             {//get image url from result
 
-              if(qin.includes("bode plot"))
+              if(qin[1].includes("bode plot"))
               {
                 var i;
                 for(i = 0; i < results.queryresult.pod.length; i++)
                 {
                   if(results.queryresult.pod[i].$.title.toUpperCase() === "BODE PLOT")
                   {
-                    var p = results.queryresult.pod[i].subpod[i].img[0].$.src;
+                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
                     console.log("wolfram image link: " + p);
                     console.log("bode plot number wtf: " + i);
                     console.log("link: " +p);

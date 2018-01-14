@@ -270,7 +270,7 @@ function receivedMessage(event) {
             else
             {//get image url from result
 
-              if(qin[1].includes("bode plot"))
+              if(qin[1].match(/bode plot/i))
               {
                 var i;
                 for(i = 0; i < results.queryresult.pod.length; i++)
@@ -283,12 +283,25 @@ function receivedMessage(event) {
                   }
                 }
               }
-              else if(qin[1].includes("nyquist plot"))
+              else if(qin[1].match(/nyquist plot/i))
               {
                 var i;
                 for(i = 0; i < results.queryresult.pod.length; i++)
                 {
                   if(results.queryresult.pod[i].$.title.toUpperCase() === "NYQUIST PLOT")
+                  {
+                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
+                    console.log("wolfram image link: " + p);
+                    sendQueryResult(senderID, p);
+                  }
+                }
+              }
+              else if(qin[1].match(/root locus/i))
+              {
+                var i;
+                for(i = 0; i < results.queryresult.pod.length; i++)
+                {
+                  if(results.queryresult.pod[i].$.title.toUpperCase() === "ROOT LOCUS PLOT")
                   {
                     var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
                     console.log("wolfram image link: " + p);
@@ -317,6 +330,15 @@ function receivedMessage(event) {
     }
     else {
       switch (messageText) {
+        case 'help':
+          var helpMessage = `This is a wolfram api parser bot that returns wolfram queries
+            Your query must start with 'wolfram' to be picked up,
+            Otherwise you just get your message echoed.
+            Current supported queries are most mathematical ones and 
+            Bode, Nyquist, root locus plots. For plots, the query must contain
+            bode plot, nyquist plot, or root locus; respectively
+                            `;
+          break;
         case 'image':
           sendImageMessage(senderID);
           break;
@@ -333,10 +355,6 @@ function receivedMessage(event) {
           break;
         case 'z transform':
           sendTextMessage(senderID, "$$\\mathcal{Z}\\{x[k]\\}=\\sum_{k=0}^{\\infty}x[k]z^{-k}$$");
-          break;
-
-        case 'help':
-          sendTextmessage(senderID, "todo");
           break;
         default:
           sendTextMessage(senderID, messageText);

@@ -338,6 +338,7 @@ function receivedMessage(event) {
             Bode, Nyquist, root locus plots. For plots, the query must contain
             bode plot, nyquist plot, or root locus; respectively
                             `;
+          sendTextMessage(senderID, helpMessage);
           break;
         case 'image':
           sendImageMessage(senderID);

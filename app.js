@@ -279,8 +279,19 @@ function receivedMessage(event) {
                   {
                     var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
                     console.log("wolfram image link: " + p);
-                    console.log("bode plot number wtf: " + i);
-                    console.log("link: " +p);
+                    sendQueryResult(senderID, p);
+                  }
+                }
+              }
+              else if(qin[1].includes("nyquist plot"))
+              {
+                var i;
+                for(i = 0; i < results.queryresult.pod.length; i++)
+                {
+                  if(results.queryresult.pod[i].$.title.toUpperCase() === "NYQUIST PLOT")
+                  {
+                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
+                    console.log("wolfram image link: " + p);
                     sendQueryResult(senderID, p);
                   }
                 }

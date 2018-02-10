@@ -270,9 +270,10 @@ function receivedMessage(event) {
             else
             {//get image url from result
               var i;
+              param = qin[2] || "Result"; //if param is null, return result pod
               for(i = 0; i < results.queryresult.pod.length; i++)
               {
-                if(results.queryresult.pod[i].$.title.toUpperCase() === qin[2].toUpperCase())
+                if(results.queryresult.pod[i].$.title.toUpperCase() === param.toUpperCase())
                 {
                   var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
                   console.log("wolfram image link: " + p);

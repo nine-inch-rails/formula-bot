@@ -258,7 +258,7 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    var qin = messageText.match(/wolfram (.+)/i);
+    var qin = messageText.match(/wolfram (.+) param: (.+)/i);//query is [1], param is [2]
     if(qin != null) {//wolfram alpha query
       console.log("qin value: " + qin);
       var qresult = wolfram.query(qin[1], function(err, results)
@@ -269,61 +269,31 @@ function receivedMessage(event) {
             }
             else
             {//get image url from result
-
-              if(qin[1].match(/bode plot/i))
+              var i;
+              for(i = 0; i < results.queryresult.pod.length; i++)
               {
-                var i;
-                for(i = 0; i < results.queryresult.pod.length; i++)
+                if(results.queryresult.pod[i].$.title.toUpperCase() === qin[2].toUpperCase())
                 {
-                  if(results.queryresult.pod[i].$.title.toUpperCase() === "BODE PLOT")
-                  {
-                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
-                    console.log("wolfram image link: " + p);
-                    sendQueryResult(senderID, p);
-                  }
-                }
-              }
-              else if(qin[1].match(/nyquist plot/i))
-              {
-                var i;
-                for(i = 0; i < results.queryresult.pod.length; i++)
-                {
-                  if(results.queryresult.pod[i].$.title.toUpperCase() === "NYQUIST PLOT")
-                  {
-                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
-                    console.log("wolfram image link: " + p);
-                    sendQueryResult(senderID, p);
-                  }
-                }
-              }
-              else if(qin[1].match(/root locus/i))
-              {
-                var i;
-                for(i = 0; i < results.queryresult.pod.length; i++)
-                {
-                  if(results.queryresult.pod[i].$.title.toUpperCase() === "ROOT LOCUS PLOT")
-                  {
-                    var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
-                    console.log("wolfram image link: " + p);
-                    sendQueryResult(senderID, p);
-                  }
-                }
-              }
-              else
-              {
-                if(results.queryresult.pod[1].$.title.toUpperCase() === "Result".toUpperCase())//if 2nd pod is result, use that, else, use first pod
-                {
-                  var p = results.queryresult.pod[1].subpod[0].img[0].$.src;
+                  var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
                   console.log("wolfram image link: " + p);
                   sendQueryResult(senderID, p);
                 }
                 else
                 {
-                  var queryimagelink = results.queryresult.pod[0].subpod[0].img[0].$.src;
-                  console.log("wolfram image link: " + queryimagelink);
-                  sendQueryResult(senderID, queryimagelink);
+                  if(results.queryresult.pod[1].$.title.toUpperCase() === "Result".toUpperCase())//if 2nd pod is result, use that, else, use first pod
+                  {
+                    var p = results.queryresult.pod[1].subpod[0].img[0].$.src;
+                    console.log("wolfram image link: " + p);
+                    sendQueryResult(senderID, p);
+                  }
+                  else
+                  {
+                    var queryimagelink = results.queryresult.pod[0].subpod[0].img[0].$.src;
+                    console.log("wolfram image link: " + queryimagelink);
+                    sendQueryResult(senderID, queryimagelink);
+                  }
                 }
-              }
+              }    
             }
           }
         )
@@ -332,12 +302,11 @@ function receivedMessage(event) {
       switch (messageText) {
         case 'help':
           var helpMessage = `This is a wolfram api parser bot that returns wolfram queries
-            Your query must start with 'wolfram' to be picked up,
-            Otherwise you just get your message echoed.
-            Current supported queries are most mathematical ones and 
-            Bode, Nyquist, root locus plots. For plots, the query must contain
-            bode plot, nyquist plot, or root locus; respectively
-                            `;
+Your query must follow the structure below to be picked up,
+'wolfram <query> param: param you want returned (plot, result, etc)'          
+Otherwise you just get your message echoed.
+Current supported queries are most mathematical ones.
+`;
           sendTextMessage(senderID, helpMessage);
           break;
         case 'image':

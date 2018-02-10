@@ -278,21 +278,6 @@ function receivedMessage(event) {
                   console.log("wolfram image link: " + p);
                   sendQueryResult(senderID, p);
                 }
-                else
-                {
-                  if(results.queryresult.pod[1].$.title.toUpperCase() === "Result".toUpperCase())//if 2nd pod is result, use that, else, use first pod
-                  {
-                    var p = results.queryresult.pod[1].subpod[0].img[0].$.src;
-                    console.log("wolfram image link: " + p);
-                    sendQueryResult(senderID, p);
-                  }
-                  else
-                  {
-                    var queryimagelink = results.queryresult.pod[0].subpod[0].img[0].$.src;
-                    console.log("wolfram image link: " + queryimagelink);
-                    sendQueryResult(senderID, queryimagelink);
-                  }
-                }
               }    
             }
           }

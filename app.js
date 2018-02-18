@@ -296,16 +296,24 @@ function receivedMessage(event) {
             else
             {//get image url from result
               var j;
+              var flag = 0;
               var param2 = "Result"; 
               for(j = 0; j < results.queryresult.pod.length; j++)
               {
                 if(results.queryresult.pod[j].$.title.toUpperCase() === param2.toUpperCase())
                 {
+                  flag = 1;
                   var p = results.queryresult.pod[j].subpod[0].img[0].$.src;
                   console.log("wolfram image link: " + p);
                   sendQueryResult(senderID, p);
                 }
               }    
+              if(flag == 0)
+              {
+                var resp = results.queryresult.pod[0].subpod[0].img[0].$.src;
+                console.log("wolfram image link: " + queryimagelink);
+                sendQueryResult(senderID, resp); //if no result, send first pod's image
+              }
             }
           }
         )

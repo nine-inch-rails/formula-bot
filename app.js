@@ -294,13 +294,13 @@ function receivedMessage(event) {
             }
             else
             {//get image url from result
-              var i;
+              var j;
               param = "Result"; 
-              for(i = 0; i < results.queryresult.pod.length; i++)
+              for(j = 0; j < results.queryresult.pod.length; j++)
               {
-                if(results.queryresult.pod[i].$.title.toUpperCase() === param.toUpperCase())
+                if(results.queryresult.pod[j].$.title.toUpperCase() === param.toUpperCase())
                 {
-                  var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
+                  var p = results.queryresult.pod[j].subpod[0].img[0].$.src;
                   console.log("wolfram image link: " + p);
                   sendQueryResult(senderID, p);
                 }

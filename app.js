@@ -311,7 +311,7 @@ function receivedMessage(event) {
               if(flag == 0)
               {
                 var resp = results.queryresult.pod[0].subpod[0].img[0].$.src;
-                console.log("wolfram image link: " + queryimagelink);
+                console.log("wolfram image link: " + resp);
                 sendQueryResult(senderID, resp); //if no result, send first pod's image
               }
             }

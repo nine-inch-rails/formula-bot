@@ -259,7 +259,7 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     var qin = messageText.match(/wolfram (.+) param: (.+)/i);//query is [1], param is [2]
-    var qin2 = messageText.match(/wolfram (.+) /i);//query is [1], param is [2]
+    var qin2 = messageText.match(/wolfram (.+)/i);//query is [1]
     if(qin != null) {//wolfram alpha query
       console.log("qin value: " + qin);
       var qresult = wolfram.query(qin[1], function(err, results)
@@ -286,6 +286,7 @@ function receivedMessage(event) {
         )
     }
     else if(qin2 != null){//no param value; use default
+      console.log("qin2 value: " + qin2)
       var qresult = wolfram.query(qin2[1], function(err, results)
           {
             if(err)

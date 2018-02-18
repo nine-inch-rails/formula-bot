@@ -268,6 +268,10 @@ function receivedMessage(event) {
             {
               sendTextMessage(senderID, err);
             }
+            else if(results.queryresult.pod == null)
+            {
+              sentTextMessage(senderID, "no results");
+            }
             else
             {//get image url from result
               var i;
@@ -292,6 +296,10 @@ function receivedMessage(event) {
             if(err)
             {
               sendTextMessage(senderID, err);
+            }
+            else if(results.queryresult.pod == null)
+            {
+              sentTextMessage(senderID, "no results");
             }
             else
             {//get image url from result

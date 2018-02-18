@@ -259,6 +259,7 @@ function receivedMessage(event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     var qin = messageText.match(/wolfram (.+) param: (.+)/i);//query is [1], param is [2]
+    var qin2 = messageText.match(/wolfram (.+) /i);//query is [1], param is [2]
     if(qin != null) {//wolfram alpha query
       console.log("qin value: " + qin);
       var qresult = wolfram.query(qin[1], function(err, results)
@@ -270,7 +271,31 @@ function receivedMessage(event) {
             else
             {//get image url from result
               var i;
-              param = qin[2] || "Result"; //if param is null, return result pod
+              param = qin[2]; 
+              for(i = 0; i < results.queryresult.pod.length; i++)
+              {
+                if(results.queryresult.pod[i].$.title.toUpperCase() === param.toUpperCase())
+                {
+                  var p = results.queryresult.pod[i].subpod[0].img[0].$.src;
+                  console.log("wolfram image link: " + p);
+                  sendQueryResult(senderID, p);
+                }
+              }    
+            }
+          }
+        )
+    }
+    else if(qin2 != null){//no param value; use default
+      var qresult = wolfram.query(qin2[1], function(err, results)
+          {
+            if(err)
+            {
+              sendTextMessage(senderID, err);
+            }
+            else
+            {//get image url from result
+              var i;
+              param = "Result"; 
               for(i = 0; i < results.queryresult.pod.length; i++)
               {
                 if(results.queryresult.pod[i].$.title.toUpperCase() === param.toUpperCase())
